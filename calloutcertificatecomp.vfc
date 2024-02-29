@@ -1,0 +1,221 @@
+<apex:component access="global" >
+    <apex:attribute name="sheets" type="fax__Service_Report__c" description="TODO: Describe me" />
+    <apex:attribute name="JobsheetTempId" type="Id" description="Attribute on the component."  />
+   <head>
+    <style type="text/css" media="print">   
+@page {      
+
+        
+         size: A4;        
+        margin: .1in .3in .3in .3in; 
+}
+                           
+div.header {
+         font-family:Arial,Helvetica,sans-serif;
+       
+           
+        }
+                
+</style>
+</head>
+   <div class="header">
+    
+               <table border="0" width="100%" align="center">
+                  <tr>
+                     <td>
+                          <p style="font-size: 13px;">
+                           VENTRO <br/>
+                           AQUILAM HOUSE<br/>
+                           7 DARKLAKE VIEW<br/>
+                           ESTOVER<br/>
+                           PLYMOUTH<br/>
+                           PL6 7TL
+                          </p>
+                          <p style="font-size: 10px;">
+                          T:  0345 38 10 999
+                          <br/>
+                          E:  contactus@ventrogroup.com
+                          <br/>
+                          W:  www.ventrogroup.com
+                          </p>
+                     </td>
+                     <td>
+                            <img width="210" height="90" src="{!$resource.ventro}" align="right"/>
+                     </td>
+                  </tr>
+               </table>
+                      
+           
+</div>
+
+<!--contaent-->
+<body>
+  <div style="text-align:center;font-size: 16px;">
+<apex:outputText style="font-weight: normal;font-family: Arial Unicode MS;font-size:18px;" value="ENGINEERS REPORT SHEET "/>  
+</div>
+ <!--<div style="text-align:right;font-size: 16px;">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font style="font-weight: noraml;font-family: Arial Unicode MS;font-size:17px;">{!sheets.name}</font>
+  </div>--->
+<br/>
+<table  style="border: 0px solid #CCCCCC" cellspacing="0" cellpadding="0" width="100%">
+                        <tr>
+                            <td width="60%" align="center" style="font-Size:12px;"></td>
+                            <td width="40%" align="right" style="padding-bottom:0.6em;font-weight:normal;font-family: Arial Unicode MS;font-size:16px;">{!sheets.name}</td>
+                       
+                         </tr>        
+<tr style="display:{!if(CONTAINS($label.Metropolitan_Thames_Valley_id, sheets.fax__Site__r.name),'','none')}"> 
+    <td width="50%" align="center" style="font-Size:12px;"></td>
+        <td width="50%" align="left" style="padding-top:.6em;padding-bottom:1em;padding-left:1em;font-Size:16px;background-color:#CCCCCC;">
+        <b>Order No&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </b>{!sheets.Po_Number__c}
+        </td>
+    </tr>
+    <tr style="display:{!if(CONTAINS($label.Magna_housing, sheets.fax__Site__r.Parent.name),'display','none')}"> 
+    <td width="50%" align="center" style="font-Size:12px;"></td>
+        <td width="50%" align="left" style="padding-top:.6em;padding-bottom:1em;padding-left:1em;font-Size:16px;background-color:#CCCCCC;">
+        <b>Order No&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </b>{!sheets.Po_Number__c}
+        </td>
+    </tr>
+                        <tr style="display:{!if(CONTAINS($label.Time_stamps, sheets.fax__Site__r.name),'','none')}">
+                            <td width="60%" align="center" style="font-Size:12px;"></td>
+                            <td width="40%" align="left" style="padding-top:.6em;padding-bottom:2em;padding-left:1em;font-Size:16px;background-color:#CCCCCC;"><b>Order No&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </b>{!sheets.Po_Number__c}<br/><b> Job Start Time:</b><apex:outputText value="{0,date, dd'/'MM'/'yyyy HH:mm }">
+                            <apex:param value="{!sheets.DayLight_Start_Time__c}"/></apex:outputtext><br/><b> Job End Time&nbsp;&nbsp;:</b><apex:outputText value="{0,date, dd'/'MM'/'yyyy HH:mm}">
+                            <apex:param value="{!sheets.Daylight_End_Time__c}"/></apex:outputtext>
+                            </td>
+                         </tr>        
+</table>
+       <br/>
+
+<table  width="100%" align="center" style="border: 1px solid black;
+    border-collapse: collapse;border-bottom:1px solid black;align:center;" height="100%">
+    
+<tr width="100%">
+<td width="42%" style="border: 1px solid black;border-collapse: collapse;border-left:1px solid black;border-right:1px solid black;text-align:left;vertical-align: top;font-weight: noraml;font-family: Arial Unicode MS;font-size:13px;">&nbsp;JOB / REPORT REFERENCE:&nbsp;{!Sheets.fax__Visit__r.name}&nbsp;/&nbsp;{!sheets.name}</td>
+ 
+ <td width="3%" style="border: 0px solid black;border-collapse: collapse;
+    border-top:0px solid black;border-bottom: 0px black;" ></td>
+<!--<apex:outputpanel rendered="{!Sheets.Site__r.Parent.Name == 'Metropolitan Thames Valley'}">   
+        <td width="30%" style="border: 1px solid black;border-collapse: collapse;border-left:1px solid black;border-right:1px solid black;text-align:left;vertical-align: top;font-weight: noraml;font-family: Arial Unicode MS;font-size:13px;">&nbsp;SIC CODE:&nbsp;{!Sheets.Site__r.SIC_Code__c}</td>
+    </apex:outputpanel> -->
+</tr>
+</table>
+
+<br/>
+
+
+<table width="100%" align="center" style="border: 1px solid black;
+    border-collapse: collapse;
+    border-bottom:1px solid black; ">
+<tr width="100%">
+<td width="20%" style="border: 1px solid black;border-collapse: collapse;border-left:1px solid black;border-right:0px solid black;text-align:left;vertical-align: top;font-weight: noraml;font-family: Arial Unicode MS;font-size:13px;">CLIENT NAME:</td>
+<td width="30%" style="border: 1px solid black;
+    border-collapse: collapse;
+    border-left:0px solid black;font-weight: noraml;font-family: Arial Unicode MS;font-size:13px;">{!Sheets.fax__Site__r.name}</td>
+   
+<td width="20%" style="border: 1px solid black;
+    border-collapse: collapse;
+    border-left:1px solid black;border-right:0px solid black;font-weight: noraml;font-family: Arial Unicode MS;font-size:13px;">SITE NAME:</td>
+<td width="30%" style="border: 1px solid black;
+    border-collapse: collapse;
+    border-left:0px solid black;font-weight: noraml;font-family: Arial Unicode MS;font-size:13px;">{!Sheets.Site__r.name}</td>
+
+</tr>
+<tr width="100%">
+<td width="20%" style="border: 1px solid black;
+    border-collapse: collapse;
+    border-left:1px solid black;border-right:0px solid black;font-weight: noraml;font-family: Arial Unicode MS;font-size:13px;text-align:left;vertical-align: top;">BILLING ADDRESS:</td>
+<td width="30%" style="border: 1px solid black;border-left:0px solid black;
+    border-collapse: collapse;
+    border-left:0px solid black;font-weight: noraml;font-family: Arial Unicode MS;font-size:13px;text-align:left;vertical-align: top;">
+   <!-- <apex:outputPanel rendered="{!Sheets.Site__c==null}">{!Sheets.fax__Site__r.BillingStreet} <br/>
+    {!Sheets.fax__Site__r.BillingCity} <br/>
+    {!Sheets.fax__Site__r.BillingState }<br/>
+    {!Sheets.fax__Site__r.BillingPostalCode}
+</apex:outputPanel>
+  <apex:outputPanel rendered="{!Sheets.Site__c!=null}">
+    {!Sheets.Site__r.billingstreet}<br/>
+    {!Sheets.Site__r.billingcity}<br/>
+    {!Sheets.Site__r.billingstate}<br/>
+    {!Sheets.Site__r.billingPostalCode}
+</apex:outputPanel> -->
+    <apex:outputField value="{!Sheets.BillingAddress__c}"/>  
+    
+</td>
+   
+<td width="15%" style="border: 1px solid black;border-collapse: collapse;border-left:0px solid black;border-right:0px solid black;text-align:left;vertical-align: top;font-weight: noraml;font-family: Arial Unicode MS;font-size:13px;">SITE ADDRESS:</td>
+<td width="35%" style="border: 1px solid black;
+    border-collapse: collapse;
+    border-left:0px solid black;border-left:0px solid black;text-align:left;vertical-align: top;font-family: Arial Unicode MS;font-size:13px;">
+                              <!--      <apex:outputPanel rendered="{!Sheets.Site__c==null}">{!Sheets.fax__Site__r.ShippingStreet} <br/>
+    {!Sheets.fax__Site__r.ShippingCity} <br/>
+    {!Sheets.fax__Site__r.ShippingState}<br/>
+    {!Sheets.fax__Site__r.ShippingPostalCode}
+</apex:outputPanel>
+  <apex:outputPanel rendered="{!Sheets.Site__c!=null}">
+    {!Sheets.Site__r.ShippingStreet}<br/>
+    {!Sheets.Site__r.ShippingCity}<br/>
+    {!Sheets.Site__r.ShippingState}<br/>
+    {!Sheets.Site__r.ShippingPostalCode}
+</apex:outputPanel> -->
+    <apex:outputField value="{!Sheets.ShippingAddress__c}"/>  
+
+ </td>         
+
+</tr>
+
+ <!-------- Newly added for #66809 ---------------->
+    
+    
+    <tr  style="display:{!if(CONTAINS($label.SIC_Code_Accounts, Sheets.fax__Site__r.name),'','none')}">
+        <td style="border: 1px solid black;border-collapse: collapse;border-left:0px solid black;border-right:0px solid black;text-align:left;vertical-align: top;font-weight: noraml;font-family: Arial Unicode MS;font-size:13px;">SIC CODE :</td>
+        <td style="border: 1px solid black; border-collapse: collapse; border-left:0px solid black;border-left:0px solid black;text-align:left;vertical-align: top;font-family: Arial Unicode MS;font-size:13px;">{!Sheets.Site__r.SIC_Code__c}</td>
+    </tr>
+    
+    <!-------- Newly added for #66809 ---------------->
+
+
+</table>
+<br/>
+<table width="100%" style="border: 1px solid black;border-top:1px solid black;border-collapse: collapse;">
+   
+    <tr>
+        <td style="border: 1px solid black;border-collapse: collapse;text-align:left;vertical-align: top;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;" height="20">&nbsp;ENGINEER REPORT</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid black;border-collapse: collapse;text-align:left;vertical-align: top;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;" height="80">{!sheets.Engineer_Report__c}<br/>&nbsp;<br/>
+          <br/><br/><br/><br/><br/><br/><br/><br/>
+        </td>
+    </tr>
+
+</table>
+ <br/>
+ <table width="100%" style="border: 1px solid black;border-top:1px solid black;border-collapse: collapse;">
+   
+    <tr>
+        <td width="15%" style="border: 1px solid black;border-collapse: collapse;text-align:left;vertical-align: top;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;" >&nbsp;CLIENT &nbsp;SIGNATURE</td>
+        <td width="35%" style="border: 1px solid black;border-collapse: collapse;text-align:left;vertical-align: top;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;" >&nbsp;<apex:outputtext value="{!substitute(sheets.fax__Customer_Signature__c,"alt=","width=\"100px\" Alt=")}" escape="false"/></td>
+        <td width="15%" style="border: 1px solid black;border-collapse: collapse;text-align:left;vertical-align: top;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;" >&nbsp;ENGINEER &nbsp;SIGNATURE</td>
+        <td width="35%" style="border: 1px solid black;border-collapse: collapse;text-align:left;vertical-align: top;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;" >&nbsp;
+            <apex:outputtext value="{!substitute(sheets.fax__Engineer_Signature__c,"alt=","width=\"100px\" Alt=")}" escape="false"/>
+        </td>
+    </tr>
+    <tr>
+        <td width="15%" style="border: 1px solid black;border-collapse: collapse;text-align:left;vertical-align: top;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;" >&nbsp;PRINT</td>
+        <td width="35%" style="border: 1px solid black;border-collapse: collapse;text-align:left;vertical-align: top;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;" >&nbsp;{!sheets.Print__c}</td>
+        <td width="15%" style="border: 1px solid black;border-collapse: collapse;text-align:left;vertical-align: top;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;" >&nbsp;PRINT </td>
+        <td width="35%" style="border: 1px solid black;border-collapse: collapse;text-align:left;vertical-align: top;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;" >&nbsp;{!sheets.Print1__c}</td>
+    </tr>
+     <tr>
+        <td width="15%" style="border: 1px solid black;border-collapse: collapse;text-align:left;vertical-align: top;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;" >&nbsp;DATE</td>
+        <td width="35%" style="border: 1px solid black;border-collapse: collapse;text-align:left;vertical-align: top;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;" >&nbsp;<apex:outputText value="{0,date,  dd'/' MM '/' yyyy}"> <apex:param value="{!sheets.Date__c}" /></apex:outputText></td>
+        <td width="15%" style="border: 1px solid black;border-collapse: collapse;text-align:left;vertical-align: top;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;" >&nbsp;DATE</td>
+        <td width="35%" style="border: 1px solid black;border-collapse: collapse;text-align:left;vertical-align: top;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;" >&nbsp;<apex:outputText value="{0,date,  dd'/' MM '/' yyyy}"> <apex:param value="{!sheets.Date1__c}" /></apex:outputText></td>
+    </tr>
+
+</table>
+
+<!--footer-->
+<div class="footer">
+<p style="font-size: 10px;font-style: italic;font-size:8px;">Neither the author(s) of this document nor [Fire-Docs.com Limited] accept any responsibility for its compliance with any laws, regulations, standards or rules. You are advised to rely upon your own legal advice in this respect. Copyright © [Fire-Docs.com Limited] 2017. All rights reserved. In particular, this document should not be copied without our express written permission</p>
+</div>
+</body>   
+</apex:component>
