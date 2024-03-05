@@ -1,0 +1,468 @@
+<!-- =============================================
+*Components Name      : SmokeVentPreview
+*Description          : Preview Page Fire Alarm and Emergency Lighting .
+*Company              : Merfantz Technologies Pvt Ltd
+*Date                 : 01th Mar, 2023
+*Version              : 1.0
+*Ticket No            : 106730
+============================================= -->
+<apex:component access="global">
+    <apex:attribute description="Inspection Fire Ex  Eform" name="Sheets" type="fax__Service_Report__c"   />
+    <apex:attribute name="JobsheetTempId" type="Id" description="Attribute on the component." />
+    
+    <div class="header">
+        
+        <img  src="{!$resource.ventro}" width="230" height="90" align="left"/>                     
+        
+    </div> 
+    <body>
+       <div style="text-align:center;font-size: 16px;">
+            <apex:repeat value="{!sheets.Type_Services__r}" var="serv">
+                <apex:outputText rendered="{!IF(AND(CONTAINS($Label.AccountName, Sheets.fax__Site__r.name), Sheets.fax__Job_Type__r.name == 'Smoke Vents - FAEL',serv.Type_Serviced__c =='AOV'), true, false)}">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<u><font style="font-weight: normal;font-family: Arial Unicode MS;font-size:20px;">VENTRO AOV<br/> CERTIFICATE OF INSPECTION</font></u>
+                </apex:outputText>
+            </apex:repeat>
+
+            <apex:outputText rendered="{!IF(AND(CONTAINS($Label.AccountName, Sheets.fax__Site__r.name), Sheets.RecordType.Name == 'Fire Alarm and Emergency Lighting',Sheets.fax__Job_Type__r.name != 'Smoke Vents - FAEL'), true, false)}">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<u><font style="font-weight: normal;font-family: Arial Unicode MS;font-size:20px;">VENTRO FIRE ALARM<br/> CERTIFICATE OF INSPECTION</font></u>
+            </apex:outputText>
+
+    <apex:outputText rendered="{!IF(NOT(CONTAINS($Label.AccountName, Sheets.fax__Site__r.name)) && Sheets.RecordType.Name == 'Fire Alarm and Emergency Lighting', true, false)}">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<u><font style="font-weight: normal;font-family: Arial Unicode MS;font-size:20px;">VENTRO SMOKE VENT INSPECTION</font></u>
+    </apex:outputText>
+    </div>
+        
+        <table  style="border: 0px solid #CCCCCC" cellspacing="0" cellpadding="0" width="100%">
+            <tr>
+                <td width="50%" align="center" style="font-Size:12px;"></td>
+                <td width="50%" align="right" style="padding-bottom:0.6em;font-weight:normal;font-family: Arial Unicode MS;font-size:16px;">{!sheets.name}</td>
+                
+            </tr>        
+             <tr style="display:{!if(CONTAINS($label.Metropolitan_Thames_Valley_id, sheets.fax__Site__r.name),'','none')}"> 
+            <td width="50%" align="center" style="font-Size:12px;"></td>
+        <td width="50%" align="left" style="padding-top:.6em;padding-bottom:1em;padding-left:1em;font-Size:16px;background-color:#CCCCCC;">
+        <b>Order No&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </b>{!sheets.Po_Number__c}
+        </td>
+         </tr>
+            <tr style="display:{!if(CONTAINS($label.Magna_housing, sheets.fax__Site__r.Parent.name),'display','none')}"> 
+            <td width="50%" align="center" style="font-Size:12px;"></td>
+        <td width="50%" align="left" style="padding-top:.6em;padding-bottom:1em;padding-left:1em;font-Size:16px;background-color:#CCCCCC;">
+        <b>Order No&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </b>{!sheets.Po_Number__c}
+        </td>
+         </tr>
+            
+            <tr style="display:{!if(CONTAINS($label.Time_stamps, sheets.fax__Site__r.name),'','none')}">
+                <td width="50%" align="center" style="font-Size:12px;"></td>
+                <td width="50%" align="left" style="padding-top:.6em;padding-bottom:2em;padding-left:1em;font-Size:16px;background-color:#CCCCCC;"><b>Order No&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b>{!sheets.Po_Number__c}<br/><b> Job Start Time:</b><apex:outputText value="{0,date, dd'/'MM'/'yyyy HH:mm}">
+                    <apex:param value="{!sheets.DayLight_Start_Time__c}"/></apex:outputtext> <br/><b> Job End Time&nbsp;&nbsp;</b><apex:outputText value="{0,date, dd'/'MM'/'yyyy HH:mm}">
+                    <apex:param value="{!sheets.Daylight_End_Time__c}"/></apex:outputtext>
+                </td>
+            </tr>        
+        </table>
+        <br/>
+        
+        <br/>
+        <table width="100%" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px">
+            <tr width="100%">                
+                <td width="33%" style="border: 1px solid black;
+                                       border-collapse: collapse;
+                                       border-left:1px solid black;">ISSUING OFFICE</td>
+                <td width="34%" style="border: 1px solid black;
+                                       border-collapse: collapse;
+                                       border-left:1px solid black;">SERVICE AT</td>
+                <td width="33%" style="border: 1px solid black;
+                                       border-collapse: collapse;
+                                       border-left:1px solid black;">INVOICE TO</td>
+            </tr>
+            <tr width="100%">
+                <td width="33%" height="100" style="border: 1px solid black;
+                                                    border-collapse: collapse;
+                                                    border-left:1px solid black;vertical-align: top;">Ventro Group Ltd,<br/>Aquilam House, <br/> 7 Darklake View,<br/>Plymouth, <br/>PL6 7T<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;</td>
+                
+                
+                <td width="34%" height="100" style="border: 1px solid black;
+                                                    border-collapse: collapse;
+                                                    border-left:1px solid black;vertical-align: top;">
+                                                    <apex:outputField value="{!Sheets.ShippingAddress__c}"/>  
+
+                   <!-- <apex:outputPanel rendered="{!Sheets.Site__c==null}">{!Sheets.fax__Site__r.ShippingStreet} <br/>
+                        {!Sheets.fax__Site__r.ShippingCity} <br/>
+                        {!Sheets.fax__Site__r.ShippingState}<br/>
+                        {!Sheets.fax__Site__r.ShippingPostalCode}
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel rendered="{!Sheets.Site__c!=null}">
+                        {!Sheets.Site__r.ShippingStreet}<br/>
+                        {!Sheets.Site__r.ShippingCity}<br/>
+                        {!Sheets.Site__r.ShippingState}<br/>
+                        {!Sheets.Site__r.ShippingPostalCode}
+                    </apex:outputPanel> -->
+                </td>        
+                <td width="33%" height="100" style="border: 1px solid black;
+                                                    border-collapse: collapse;
+                                                    border-left:1px solid black;vertical-align: top;">
+                        <apex:outputField value="{!Sheets.BillingAddress__c}"/>  
+
+                   <!-- <apex:outputPanel rendered="{!Sheets.Site__c==null}">{!Sheets.fax__Site__r.BillingStreet} <br/>
+                    {!Sheets.fax__Site__r.BillingCity} <br/>
+                    {!Sheets.fax__Site__r.BillingState }<br/>
+                    {!Sheets.fax__Site__r.BillingPostalCode}
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!Sheets.Site__c!=null}">
+                        {!Sheets.Site__r.billingstreet}<br/>
+                        {!Sheets.Site__r.billingcity}<br/>
+                        {!Sheets.Site__r.billingstate}<br/>
+                        {!Sheets.Site__r.billingPostalCode}
+                    </apex:outputPanel>-->
+                </td>
+            </tr>
+            <tr width="100%"> 
+                <td width="33%" style="border: 1px solid black;
+                                       border-collapse: collapse;
+                                       border-left:1px solid black;">JOB NO &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!sheets.fax__Visit__r.name}</td>
+                <td width="34%" style="border: 1px solid black;
+                                       border-collapse: collapse;
+                                       border-left:1px solid black;"> DATE &nbsp;&nbsp;
+                    <apex:outputText value="{0,date,  dd'/' MM '/' yyyy}"> <apex:param value="{!sheets.fax__Job_End_Time__c}" /> </apex:outputText> 
+                </td>
+               <td width="34%" style="display:{!if(NOT(CONTAINS($label.AccountName, sheets.fax__Site__r.name)),'display','none')};border: 1px solid black;
+                                       border-collapse: collapse;
+                                       border-left:1px solid black;font-weight: normal; font-family: Arial Unicode MS;"> ORIGINATOR &nbsp;&nbsp;{!sheets.Originator__c} </td>
+                 <td width="34%" style="display:{!if(CONTAINS($label.AccountName, sheets.fax__Site__r.name),'display','none')};border: 1px solid black;
+                                       border-collapse: collapse;
+                                       border-left:1px solid black;font-weight: normal; font-family: Arial Unicode MS;"> NEXT VISIT DUE DATE &nbsp;&nbsp;<apex:outputText value="{0,date,  dd'/' MM '/' yyyy}"> <apex:param value="{!sheets.Next_Visit_Due_Date__c}" /> </apex:outputText>   </td>
+            </tr>
+            
+             <tr width="100%"> 
+                <td width="33%" style="display:{!IF(AND(CONTAINS($Label.AccountName, Sheets.fax__Site__r.name), OR(Sheets.RecordType.Name == 'Fire Alarm and Emergency Lighting',Sheets.fax__Job_Type__r.name == 'Smoke Vents - FAEL')), '', 'none')};border: 1px solid black;
+                                       border-collapse: collapse;
+                                       border-left:1px solid black;font-weight: normal; font-family: Arial Unicode MS;">SIC CODE &nbsp;&nbsp;{!Sheets.Site__r.SIC_Code__c}</td>
+                <td width="34%" style="display:{!if(CONTAINS($label.AccountName, Sheets.fax__Site__r.name),'','none')};border: 1px solid black;
+                                       border-collapse: collapse;
+                                       border-left:1px solid black;font-weight: normal; font-family: Arial Unicode MS;"> PASS  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <apex:outputField rendered="{!Sheets.Pass__c}" value="{!Sheets.Pass__c}"/>
+                </td>
+                                <td width="34%" style="display:{!if(CONTAINS($label.AccountName, Sheets.fax__Site__r.name),'','none')};border: 1px solid black;
+                                       border-collapse: collapse;
+                                       border-left:1px solid black;font-weight: normal; font-family: Arial Unicode MS;"> FAIL  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <apex:outputField rendered="{!Sheets.Fail__c}" value="{!Sheets.Fail__c}"/>  </td>
+            </tr>
+            
+           <!-- <tr  style="display:{!if(CONTAINS($label.SIC_Code_Accounts, Sheets.Site__r.Parent.name+','),'display','none')}">
+                <td style="border: 1px solid black;border-collapse: collapse;text-align:left;vertical-align: top;font-weight: noraml;font-family: Arial Unicode MS;font-size:13px;">SIC CODE:&nbsp;&nbsp;&nbsp;{!Sheets.SIC_Code__c}</td>
+            </tr>-->
+            
+            
+            <tr>
+                <td height="25"></td>
+            </tr>
+            <tr>
+                <td  style="border: 1px solid black;
+                            border-collapse: collapse;
+                            border-left:1px solid black;">INSPECTION TYPE</td>
+                <td style="border: 1px solid black;
+                           border-collapse: collapse;
+                           border-left:1px solid black;" colspan="2">{!sheets.Inspection_Type__c}</td>
+            </tr>
+            
+        </table>
+        <br/>
+        
+        <apex:variable var="count" value="{!0}"   />  
+        <apex:variable var="sum" value="{!0}"   /> 
+        <apex:repeat value="{!sheets.fax__Sheet_Parts__r}">
+            <apex:variable value="{!count+1}" var="count"/>  
+        </apex:repeat>
+        <apex:repeat value="{!sheets.Type_Services__r}" var="s">
+            <apex:variable value="{!sum+s.Qty_Serviced__c}" var="sum"/>  
+        </apex:repeat>
+        
+        
+   
+        <table style="font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;border: 1px solid black;border-collapse: collapse;" width="100%" height="100%">   
+           <tr  >
+                <apex:outputText rendered="{!IF(AND(CONTAINS($Label.AccountName, Sheets.fax__Site__r.name),Sheets.fax__Job_Type__r.name == 'Smoke Vents - FAEL'), true, false)}">
+                    <td colspan="8" align ="center" width="25%" height="50%" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;">  SERVICING OF SMOKE VENTS </td>
+                    
+                </apex:outputText>                                          
+            </tr>
+            <tr>
+                <apex:outputText rendered="{!IF(NOT(CONTAINS($Label.AccountName, Sheets.fax__Site__r.name) && Sheets.fax__Job_Type__r.name == 'Smoke Vents - FAEL'), true, false )}">
+                    <td colspan="8" align ="center" width="25%" height="50%" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;">SERVICING OF FIRE ALARM &amp; EMERGENCY LIGHTING INCLUDING TESTS AND PARTS USED</td>
+                    
+                </apex:outputText>
+            </tr>
+            <tr>
+                
+                <td width="24%"  style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;">&nbsp;TYPE SERVICED</td>
+                
+                <td align="center" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="10%">QTY <br/> SERVICED</td>
+                <td align="center"  style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="10%">PASS</td>
+                <td align="center" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="10%">FAIL</td>
+                <!--<td width="18%" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" border="5px" align="center">&nbsp;</td>-->
+                <td width="37%" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;"><center>NEW <br/>EQUIPMENT</center></td>
+                <td align="center" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="10%">QTY</td>
+            </tr>
+            
+            <apex:variable var="i" value="{!1}"/>         
+            <apex:variable var="j" value="{!1}"/>         
+            <apex:variable var="k" value="{!1}"/>         
+            <apex:variable var="l" value="{!1}"/>
+            
+            
+            <apex:repeat value="{!sheets.Type_Services__r}" var="sys1" rendered="{!sheets.Count_of_serviced__c > count || sheets.Count_of_serviced__c == count}">            
+                <tr>
+                    <apex:variable var="n" value="{!0}"/>   
+                    
+                    <apex:repeat value="{!sheets.Type_Services__r}" var="sys" rendered="{!i = j}">
+                        <td border="5px" width="24%" style="{!if(k != J,'display:none','')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;">{!sys.Type_Serviced__c}</td>
+                        <td width="13%" style="{!if(k != J,'display:none','')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" align="center"><apex:outputText value="{0, number, 0}"><apex:param value="{!sys.Qty_Serviced__c}" /></apex:outputText> </td>
+                        <td width="13%" style="{!if(k != J,'display:none','')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" align="center"><apex:outputText value="{0, number, 0}"><apex:param value="{!sys.Pass__c}"/></apex:outputText></td>           
+                        <td width="14%" style="{!if(k != J,'display:none','')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" align="center"><apex:outputText value="{0, number, 0}"><apex:param value="{!sys.Fail__c}"/></apex:outputText></td>  
+                      <!--  <td width="18%" style="{!if(k != J,'display:none','')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;">{!sys.New_Equipment__c}</td> --> 
+                        <apex:variable value="{!k+1}" var="k" /> 
+                        
+                    </apex:repeat>
+                    
+                    <apex:repeat value="{!sheets.fax__Sheet_Parts__r}" var="sys2"  rendered="{!i = j && count >= j}">
+                        <td width="28%" style="{!if(l != J,'display:none','')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;">{!sys2.fax__Product__r.name}</td>   
+                        <td width="10%" style="{!if(l != J,'display:none','')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;text-align:center;" ><apex:outputText value="{0, number, 0}"><apex:param value="{!sys2.fax__Quantity__c}"/></apex:outputText></td> 
+                        <apex:variable value="{!l+1}" var="l" />   
+                        
+                    </apex:repeat>
+                    <apex:variable var="n" value="{!0}"/>   
+                    
+                    <apex:repeat value="{!sheets.Type_Services__r}" var="sys2" rendered="{!count < j }">
+                        <td width="28%" style="{!if(n == 0,'','display:none')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;"></td>
+                        <td width="10%" style="{!if(n == 0,'','display:none')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;"></td>
+                        <apex:variable value="{!n+1}" var="n" />           
+                    </apex:repeat>
+                    
+                    <apex:variable value="{!i+1}" var="i" /> 
+                    <apex:variable value="{!j+1}" var="j" /> 
+                    
+                    <apex:variable value="{!1}" var="k" />
+                    <apex:variable value="{!1}" var="l" />                          
+                </tr>
+            </apex:repeat> 
+            
+            
+            <apex:repeat value="{!sheets.fax__Sheet_Parts__r}" var="sys1" rendered="{!sheets.Count_of_serviced__c < count}">            
+                <tr>
+                    
+                    
+                    <apex:repeat value="{!sheets.Type_Services__r}" var="sys" rendered="{!i = j && sheets.Count_of_serviced__c >= j}">
+                      <td width="24%" style="{!if(l != J,'display:none','')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;">{!sys.Type_Serviced__c}</td>
+                        <!--  <td width="10%" style="{!if(l != J,'display:none','')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" align="center"><apex:outputText value="{0, number, 0}"><apex:param value="{!sys.QTY_on_Site__c}"/></apex:outputText></td>         -->         
+                        <td width="10%" style="{!if(l != J,'display:none','')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" align="center"><apex:outputText value="{0, number, 0}"><apex:param value="{!sys.Qty_Serviced__c}" /></apex:outputText></td>
+                        <td width="10%" style="{!if(l != J,'display:none','')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" align="center"><apex:outputText value="{0, number, 0}"><apex:param value="{!sys.Pass__c}"/></apex:outputText></td>           
+                        <td width="10%" style="{!if(l != J,'display:none','')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" align="center"><apex:outputText value="{0, number, 0}"><apex:param value="{!sys.Fail__c}"/></apex:outputText></td>  
+                         <apex:variable value="{!l+1}" var="l" /> 
+                        
+                        
+                        
+                    </apex:repeat>
+                    
+                    <apex:variable var="n" value="{!0}"/>   
+                    
+                    
+                    <apex:repeat value="{!sheets.fax__Sheet_Parts__r}" var="sys2" rendered="{!sheets.Count_of_serviced__c < j}">
+                        <td width="24%" style="{!if(n == 0,'','display:none')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;"></td>
+                        <!--<td width="6%" style="{!if(n == 0,'','display:none')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;"></td>-->
+                        <td width="10%" style="{!if(n == 0,'','display:none')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;"></td>
+                        <td width="10%" style="{!if(n == 0,'','display:none')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;"></td>
+                       <!-- <td width="10%" style="{!if(n == 0,'','display:none')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;"></td>-->
+                        <td width="10%" style="{!if(n == 0,'','display:none')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;"></td>
+                        <apex:variable value="{!n+1}" var="n" />           
+                    </apex:repeat>
+                    
+                    
+                    <apex:repeat value="{!sheets.fax__Sheet_Parts__r}" var="sys2"  rendered="{!i = j }">
+                        <td width="28%" style="{!if(k != J,'display:none','')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;">{!sys2.fax__Product__r.name}</td>   
+                        <td width="10%" style="{!if(k != J,'display:none','')};border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" align="center"><apex:outputText value="{0, number, 0}"><apex:param value="{!sys2.fax__Quantity__c}"/></apex:outputText></td> 
+                        <apex:variable value="{!k+1}" var="k" />     
+                        
+                    </apex:repeat>
+                    
+                    
+                    <apex:variable value="{!i+1}" var="i" /> 
+                    <apex:variable value="{!j+1}" var="j" /> 
+                    
+                    <apex:variable value="{!1}" var="k" />
+                    <apex:variable value="{!1}" var="l" />                          
+                </tr>
+            </apex:repeat> 
+            
+            
+            
+        </table>
+        <br/>
+        <table border="1" width="100%" style="font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;border-top:0px solid black;" >
+            
+            <tr width="100%">
+                <td style="border: 1px solid black;border-collapse: collapse;border-left:0px solid black;border-top:1px solid black;" width="25%">Mains Voltage  &nbsp;&nbsp;</td>
+                <td style="border: 1px solid black;border-collapse: collapse;border-left:0px solid black;border-top:1px solid black;" width="9%">{!sheets.Mains_Voltage__c}</td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="17%">SLA Age </td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="13%">{!sheets.SLA_Age__c}</td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="17%">Type of Panel</td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="19%">{!sheets.Type_of_Panel__c}</td>
+                
+            </tr>
+            <tr width="100%">
+                <td style="border: 1px solid black;border-collapse: collapse;border-left:0px solid black;border-top:0px solid black;" width="25%">SLA Charging Voltage  &nbsp;&nbsp;</td>
+                <td style="border: 1px solid black;border-collapse: collapse;border-left:0px solid black;border-top:0px solid black;" width="9%">{!sheets.SLA_Charging_Voltage__c}</td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="17%">SLA Power Calibration</td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="13%">{!sheets.SLA_Power_Calibration__c}</td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="17%">System monitored ARC </td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="19%"></td>    
+                
+            </tr>
+            <tr width="100%">
+                <td style="border: 1px solid black;border-collapse: collapse;border-left:0px solid black;border-top:0px solid black;" width="25%">SLA Voltage  &nbsp;&nbsp;</td>
+                <td style="border: 1px solid black;border-collapse: collapse;border-left:0px solid black;border-top:0px solid black;" width="9%">{!sheets.SLA_Voltage__c}</td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="17%">SLA Term Set Decon </td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="13%">{!sheets.SLA_Term_Set_Decon__c}</td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="17%">Readings in alarm</td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="19%">{!sheets.Readings_in_alarm__c}</td>
+                
+            </tr>
+            <tr width="100%">
+                <td style="border: 1px solid black;border-collapse: collapse;border-left:0px solid black;border-top:0px solid black;" width="25%">SLA Connection  &nbsp;&nbsp;</td>
+                <td style="border: 1px solid black;border-collapse: collapse;border-left:0px solid black;border-top:0px solid black;" width="9%">{!sheets.SLA_Connection__c}</td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="17%">SLA Interconnection </td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="13%">{!sheets.SLA_Interconnection__c}</td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="13%">Readings in standby</td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="23%">{!sheets.Readings_in_standby__c}</td>
+                
+            </tr>
+            
+            <tr width="100%">
+                <td style="border: 1px solid black;border-collapse: collapse;border-left:0px solid black;border-top:1px solid black;" width="25%">Sounder test completed</td>
+                <td style="border: 1px solid black;border-collapse: collapse;border-left:0px solid black;border-top:1px solid black;" width="9%">{!sheets.Sounder_test_completed__c}</td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="17%">Zone Diagram adjacent to panel </td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="13%">{!sheets.Zone_Diagram_adjacent_to_panel__c}</td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="17%">Log Book Signed </td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="19%">{!sheets.Log_Book_Signed__c}</td>
+                
+            </tr>
+            <tr width="100%">
+                
+                <td style="border: 1px solid black;border-collapse: collapse;" width="25%">No of engineers on site  </td>
+                <td style="border: 1px solid black;border-collapse: collapse;" width="9%">{!sheets.No_of_engineers_on_site__c}</td>
+             
+               
+            </tr>
+        </table>
+        <br/>
+        
+<table width="100%" style="border: 1px solid black;">
+  <tr>
+    <td colspan="2" style="text-align: left; vertical-align: top; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;">COMMENTS</td>
+  </tr>
+  <tr>
+    <td colspan="2" style="text-align: left; vertical-align: top; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;">
+      <apex:outputText value="{!sheets.Comments__c}" escape="false"/>
+    </td>
+  </tr>
+</table>
+<br/>
+<table width="100%" style="border: 1px solid black;">
+  <tr>
+    <td colspan="2" style="text-align: left; vertical-align: top; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;  ">CUSTOMER RECOMMENDATION</td>
+  </tr>
+  <tr>
+    <td colspan="2" style="text-align: left; vertical-align: top; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;">
+      <apex:outputText value="{!sheets.customer_recommendation__c}" escape="false"/>
+    </td>
+  </tr>
+</table>
+
+        <br/>
+      <br/>
+        <br/>
+        <table width="100%"  style="font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;border: 1px solid black;border-collapse: collapse;">
+            <tr> 
+                <td   colspan="2"  style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black; ">&nbsp;ENGINEER’S SIGNATURE</td>
+                <td   style="border: 1px solid black;
+                             border-collapse: collapse;
+                             border-bottom:1px solid black;">&nbsp; CUSTOMER’S SIGNATURE</td> 
+            </tr>  
+            <tr  >
+                <td colspan="2" height="100" style="border: 1px solid black;
+                                                    border-collapse: collapse;
+                                                    border-bottom:1px solid black;"><apex:outputtext value="{!substitute(sheets.fax__Engineer_Signature__c,"alt=","width=\"100px\" Alt=")}" escape="false"/></td>
+                <td height="100"  style="border: 1px solid black;
+                                         border-collapse: collapse;
+                                         border-bottom:1px solid black;"><apex:outputtext value="{!substitute(sheets.fax__Customer_Signature__c,"alt=","width=\"100px\" Alt=")}" escape="false"/></td>
+            </tr>
+            <tr width="100%">
+                <td  valign="top" style="border: 1px solid black;">T/T:{!sheets.T_T__c}</td> 
+                <td valign="top" style="border: 1px solid black;">J/T :{!sheets.J_T__c}</td>    
+                <td height="40"   valign="top"  style="border: 1px solid black;">PRINT NAME:{!sheets.Print_Name__c}</td>
+                
+            </tr>
+            
+        </table>
+        <table width="100%"  style="font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;border: 1px solid black;border-collapse: collapse;">
+            
+        </table>
+        <p style="font-family:Verdana, Arial, Helvetica, sans-serif;font-size:10px;">APART FROM ANY NON-CONFORMING ITEMS OR DEVIATIONS LISTED, ALL EQUIPMENT HAS BEEN SERVICED IN ACCORDANCE WITH BS5839 (2017) AND BS5266 (2016) AS APPLICABLE</P>
+    <table width="100%" style="border: 1px solid black;border-collapse: collapse;border-top:1px solid black">
+        <tr>
+            
+            <td colspan="3" width="100%" style="border: 1px solid black;border-bottom:0px solid black;border-collapse: collapse;text-align:left;vertical-align: top;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;" height="100">
+                <p>
+                    &nbsp;I/we being the competent person responsible (as indicated by the signature above ) for the servicing of the fire detection and fire alarm system, &nbsp;particulars of which are set out below, CERTIFY that the said work for which I/we have been responsible complies to the best of my knowledge &nbsp;and belief with the recommendations  of Clause 45 
+                    
+                    
+                    BS5839-1 :2017 quarterly inspection of vented batteries /periodic inspection and &nbsp;test/inspection and test over a 12 month period (delete as applicable ) , except for the variations, if any, stated in this certificate . 
+                    <br/><br/> &nbsp; The extent of liability of the signatory is limited to the system described below. 
+                    <br/><br/>Extent of system covered by this certificate:  <br/><br/>
+                    .................................................................................................................................................................................................. <br/><br/>
+                    &nbsp;&nbsp;{!sheets.Extent_of_system_covered_by_this_certif__c}
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" width="100%" style="border: 1px solid black;border-left:1px solid black;border-top: 0px solid black;border-bottom:0px solid black;border-collapse: collapse;text-align:left;vertical-align: top;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;" >
+                
+                &nbsp;Variations from the recommendations of Clause 45 of BS 5839-1: 2017 for periodic or annual inspection and test (as applicable )
+                <br/> 
+                <p style="margin-left:10px;">
+                    .................................................................................................................................................................................................. <br/><br/>
+                    ...................................................................................................................................................................................................
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td  width="1%" style="border: 1px solid black;border-top: 0px solid black;border-bottom:0px solid black;border-collapse: collapse;text-align:left;vertical-align: top;border-left:0px solid black;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;" >
+                
+            </td>
+        </tr>
+        <tr>
+            
+            
+            <td  width="1%" style="border: 1px solid black;border-top: 0px solid black;border-bottom:0px solid black;border-collapse: collapse;text-align:left;vertical-align: top;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;" >
+                
+            </td>
+            
+        </tr>
+        <tr>
+            
+            <td colspan="3" width="100%" style="border: 0px solid black;border-top:none;border-bottom:0px solid black;border-left:1px solid black;border-right:1px solid black;border-collapse: collapse;text-align:left;vertical-align: top;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;" height="250">
+                
+                <p>&nbsp; Relevant details of the work carried out and faults identified have been entered in the system log book. <br/><br/>
+                    &nbsp;During the past 12 months,&nbsp; ……………….false alarms have occurred. <br/><br/>
+                    &nbsp; The above number of false alarms equates to &nbsp; ……………….. false alarms per 100 automatic fire &nbsp; &nbsp;&nbsp;&nbsp;detectors per annum (for Category M <br/> &nbsp;systems enter “Not applicable “.<br/> <br/>
+                    &nbsp;The following work/action is considered necessary:</p>
+                <br/>
+                <p style="margin-left:10px;">
+                    .................................................................................................................................................................................................. <br/><br/>
+                    ...................................................................................................................................................................................................
+                </p>
+                
+            </td> 
+        </tr>
+    </table>
+    
+</body>
+
+</apex:component>
