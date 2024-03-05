@@ -1,0 +1,296 @@
+<apex:component access="global" allowDML="true" >
+<apex:attribute name="jobsheet" type="fax__Service_Report__c" description="jobsheet Object" required="required" />
+<apex:attribute name="jobsheetId" type="Id" description="Attribute on the component." />
+
+
+<head>
+<style>
+ div.vertical
+        {
+         margin-left: -85px;
+         position: absolute;
+         transform: rotate(90deg);
+        }
+        
+    th.vertical
+        {
+         height: 220px;
+         line-height: 14px;
+         padding-bottom: 20px;
+         text-align: left;
+        }
+</style>
+</head> 
+
+
+<body>
+
+
+
+<div style="">
+    
+  
+   
+    
+    <table border="1" style=" width: 100%;" >   
+    
+    <tr><th  colspan="4" align="center" style=" padding-top:.45cm;padding-bottom:.45cm;font-size: 30px; ">Fire Sprinkler Certificate of Inspection</th>     </tr>
+    <tr><td colspan="4" style="background-color:white;" align="right" ><img src="{!$Resource.ventro}" alt="Paris" width="210" height="90"/></td></tr>
+    
+    <tr><td colspan="4" style="background-color:white;" align="right" ><font style="font-weight: noraml;font-family: Arial Unicode MS;font-size:17px;">{!jobsheet.name}</font></td></tr>
+    <tr style="display:{!if(CONTAINS($Label.Time_stamps, jobsheet.fax__Site__r.name),'','none')}"><td colspan="4" style="background-color:white;" align="right" ><font style="font-weight: noraml;font-family: Arial Unicode MS;font-size:17px;">Start Date :<apex:outputText value="{0,date, dd'/'MM'/'yyyy HH:mm}"><apex:param value="{!jobsheet.Daylight_Start_Time__c }"/></apex:outputText></font></td></tr>
+    <tr style="display:{!if(OR(CONTAINS($Label.Time_stamps, jobsheet.fax__Site__r.name),CONTAINS($Label.Magna_housing, jobsheet.fax__Site__r.name)),'','none')}"><td colspan="4" style="background-color:white;" align="right" ><font style="font-weight: noraml;font-family: Arial Unicode MS;font-size:17px;">PurchaseOrder No :{!jobsheet.Po_Number__c}</font></td></tr>
+
+
+      
+      <!-- <apex:outputpanel rendered="{!jobsheet.Site__r.Parent.Name == 'London and Quadrant Housing Trust'}">
+        <tr><td colspan="4" align="left" style="background-color:white;"  ><font style="font-weight: noraml;font-family: Arial Unicode MS;font-size:17px;">Ticker Symbol:{!jobsheet.Site__r.Ticker_Symbol__c}</font></td></tr>  
+        </apex:outputpanel>-->
+        
+    <tr><td colspan="4"  align="center" style="font-size:16px;">Ventro Group Ltd, Aquilam House, 7 Darklake View, Plymouth, PL6 7T </td></tr>
+    <tr><td colspan="4"  align="center" style="font-size:14px;">Tel: 0345 38 10 999
+   Email: <a href="mailto:contactus@ventrogroup.com">contactus@ventrogroup.com</a></td></tr>
+    
+    
+    
+    <!--<tr><td colspan="4" style="background-color:white;" align="right" ><img src="{!$Resource.DualBrandLogo}" alt="Paris" width="370" height="100"/></td></tr>
+    <tr><td colspan="4" style="background-color:white;" align="right" ><font style="font-weight: noraml;font-family: Arial Unicode MS;font-size:17px;">{!jobsheet.name}</font></td></tr>
+    <tr><td colspan="4"  align="center" style="font-size:16px;">OmniZone Group Ltd, Aquilam House, Darklake View, Plymouth, PL6 7T</td></tr>
+    <tr><td colspan="4"  align="center" style="font-size:14px;">Tel: 01752 977604   Email: <a href="mailto:info@omnizonegroup.com">info@omnizonegroup.com</a></td></tr>-->
+    <tr>
+        <td style="" width="25%">Date:</td>
+        <td style="" width="25%">Order No:</td>
+        <td style="" width="25%">Contract No:</td>
+        <td style="" width="25%">Certificate No:</td>                
+    </tr>    
+    <tr>
+        <td style="" width="25%">
+        <apex:outputPanel rendered="{!if(Not(CONTAINS($Label.Time_stamps, jobsheet.fax__Site__r.name)),'','none')}">        
+        <apex:outputText value="{0, DATE,dd'/'MM'/'yyyy}"  escape="false" > 
+                                <apex:param value="{!jobsheet.fax__Job_End_Time__c}" />
+                                </apex:outputText>
+                                </apex:outputPanel>
+                                 <apex:outputPanel rendered="{!if(CONTAINS($Label.Time_stamps, jobsheet.fax__Site__r.name),'','none')}">        
+        <apex:outputText value="{0, DATE,dd'/'MM'/'yyyy HH:mm}"  escape="false" > 
+                                <apex:param value="{!jobsheet.Daylight_End_Time__c}" />
+                                </apex:outputText>
+                                </apex:outputPanel>
+        </td>
+                                
+        <td style="text-align:left;vertical-align: top;" width="25%" >{!jobsheet.fax__Visit__r.name}</td>
+        <td style="" width="25%">{!jobsheet.fax__Visit__r.fax__Service_Term__r.name}</td>
+        <td style="" width="25%">{!jobsheet.name}</td>                
+    </tr>
+    <tr>
+        <td style="" colspan="2" width="50%">Customer:</td>
+        <td style="" colspan="2" width="50%">Site Address:</td>
+    </tr>    
+
+    <tr style="">
+        <td colspan="2" width="50%"><apex:outputfield value="{!jobsheet.Site__r.name}"/></td>
+        <td colspan="2" width="50%"><apex:outputfield value="{!jobsheet.Site_Address_Formula__c}"/><br /></td>
+    </tr>   
+       <tr style="display:{!if(CONTAINS($Label.TickerSymbol_Account, jobsheet.fax__Site__r.name),'','none')}"><td colspan="4" align="Left" ><font style="font-weight: noraml;font-family: Arial Unicode MS;font-size:13px;">Ticker Symbol :&nbsp;{!jobsheet.Site__r.Ticker_Symbol__c}</font></td>
+       
+    </tr>
+        <!-------- Newly added for #66809 ---------------->
+        
+        
+        <tr style="display:{!if(CONTAINS($label.SIC_Code_Accounts, jobsheet.fax__Site__c +','),'display','none')}">
+            <td style="" width="25%">SIC CODE :</td>
+            <td style="" width="25%">{!jobsheet.Site__r.SIC_Code__c}</td>
+            <td></td>
+            <td></td>
+        </tr> 
+        
+        <!-------- Newly added for #66809 ---------------->
+   </table>
+
+<table border="1" width="100%">
+<tr><th align="center" colspan="4">Alarm Valve Inspection and Test Result</th></tr>
+<tr><td width="40%">Remote Signal Working</td><td width="10%" align="center">{!jobsheet.Remote_Signal_Working__c}</td>
+    <td width="40%">Alarm Time (s)</td><td width="10%" align="center">{!jobsheet.Alarm_Time_s__c}</td></tr>
+<tr><td width="40%">Main Valve Padlocked Open</td><td width="10%" align="center">{!jobsheet.Main_Valve_Padlocked_Open__c}</td>
+    <td width="40%">Water Motor Alarm Test after&nbsp;C</td><td width="10%" align="center">{!jobsheet.Water_Motor_Alarm_Test_after_C__c}</td></tr>
+<tr><td width="40%">Flow Rate Acceptable</td><td width="10%" align="center">{!jobsheet.Flow_Rate_Acceptable__c}</td>
+    <td width="40%">Water Motor Alarm Test before C</td><td width="10%" align="center">{!jobsheet.Water_Motor_Alarm_Test_before_C__c}</td></tr>
+<tr><td width="40%">Pressure (Bar)</td><td width="10%" align="center">{!jobsheet.Pressure_Bar__c}</td>
+    <td width="40%">Water Motor Alarm Test before C</td><td width="10%" align="center">{!jobsheet.Water_Motor_Alarm_Test_before_C__c}</td></tr>
+<tr><td width="40%">Flow (l/min)</td><td width="10%" align="center">{!jobsheet.Flow_l_min__c}</td>
+    <td width="40%">Size</td><td width="10%" align="center">{!jobsheet.Size__c}</td></tr>
+<tr><td width="40%">Highest Sprinkler (m)</td><td width="10%" align="center">{!jobsheet.Highest_Sprinkler_m__c}</td>
+    <td width="40%">Type</td><td width="10%" align="center">{!jobsheet.fax__Job_Type__r.name}</td></tr>
+<tr><td width="40%">Pressure – Full Flow C</td><td width="10%" align="center">{!jobsheet.Pressure_Full_Flow_C__c}</td>
+    <td width="40%">System No.</td><td width="10%" align="center">{!jobsheet.System_No__c}</td></tr>
+<tr><td width="40%">Pressure – Full Flow B</td><td width="10%" align="center">{!jobsheet.Pressure_Full_Flow_B__c}</td>
+    <td width="40%"></td><td width="10%"></td></tr>
+
+</table>
+
+<table border="1" width="100%">
+<tr><th align="center" colspan="4">Dry and Alternate Test Results</th></tr>
+<tr><td width="40%">Installation Left Water</td><td width="10%" align="center">{!jobsheet.Installation_Left_Water__c}</td>
+    <td width="40%">Operating Pressure Valve Trip (Bar)</td><td width="10%" align="center">{!jobsheet.Operating_Pressure_Valve_Trip_Bar__c}</td></tr>
+<tr><td width="40%">Installation Left Air</td><td width="10%" align="center">{!jobsheet.Installation_Left_Air__c}</td>
+    <td width="40%">Operating Pressure Accelerator</td><td width="10%" align="center">{!jobsheet.Operating_Pressure_Accelerator__c}</td></tr>
+<tr><td width="40%">Accelerator Isolated?</td><td width="10%" align="center">{!jobsheet.Accelerator_Isolated__c}</td>
+    <td width="40%">System Air Pressure (Bar)</td> <td width="10%" align="center">{!jobsheet.System_Air_Pressure_Bar__c}</td></tr>
+<tr><td width="40%">Accelerator Satisfactory</td><td width="10%" align="center">{!jobsheet.Accelerator_Satisfactory__c}</td>
+    <td width="40%">System No.</td><td width="25%">{!jobsheet.System_No_Alternate__c}</td></tr>
+
+</table>
+
+
+
+<table border="1" width="100%">
+  <tr><th colspan="4">SERVICE DETAILS</th></tr>
+<tr><td width="42%">Lockable Cabinet for Outlet Heads</td><td width="8%" align="center">{!jobsheet.Lockable_Cabinet_for_Outlet_Heads__c}</td><td width="42%">Spare Outlet Head Qty</td><td width="8%" align="center">{!jobsheet.Spare_Outlet_Head_Qty__c}</td></tr>
+<tr><td width="42%">Supply</td><td width="8%" align="center">{!jobsheet.Supply__c}</td><td width="42%">Age of Tank</td><td width="8%" align="center">{!jobsheet.Age_of_Tank__c}</td></tr>
+<tr><td width="42%">Is Isolation Valve Fitted</td><td width="8%" align="center">{!jobsheet.Is_Isolation_Valve_Fitted__c}</td><td width="42%">Is Valve Strapped and Locked Open</td><td width="8%" align="center">{!jobsheet.Is_Valve_Strapped_and_Locked_Open__c}</td></tr>
+<tr><td width="42%">Size &amp; Make of Valve (mm)</td><td width="8%" align="center">{!jobsheet.Size_Make_of_Valve_mm__c}</td><td width="42%">Is Flow Switch Fitted</td><td width="8%" align="center">{!jobsheet.Is_Flow_Switch_Fitted__c}</td></tr>
+<tr><td width="42%">Was Flow Switch Tested</td><td width="8%" align="center">{!jobsheet.Was_Flow_Switch_Tested__c}</td><td width="42%">Did Flow Switch Operate</td><td width="8%" align="center">{!jobsheet.Did_Flow_Switch_Operate__c}</td></tr>
+<tr><td width="42%">How Long Did It Take (sec)</td><td width="8%" align="center">{!jobsheet.How_Long_Did_It_Take_sec__c}</td><td width="42%">Is There A Test Valve</td><td width="8%" align="center">{!jobsheet.Is_There_A_Test_Valve__c}</td></tr>
+<tr><td width="42%">Are There Any Unprotected Areas</td><td width="8%" align="center">{!jobsheet.Are_There_Any_Unprotected_Areas__c}</td><td width="42%">Any Contaminated Sprinklers</td><td width="8%" align="center">{!jobsheet.Any_Contaminated_Sprinklers__c}</td></tr>
+<tr><td width="42%">Any Sprinklers Obstructed</td><td width="8%" align="center">{!jobsheet.Any_Sprinklers_Obstructed__c}</td><td width="42%">Is Pipework Free from Leaks</td><td width="8%" align="center">{!jobsheet.Is_Pipework_Free_from_Leaks__c}</td></tr>
+<tr><td width="42%">Any Corrosion on Pipework</td><td width="8%" align="center">{!jobsheet.Any_Corrosion_on_Pipework__c}</td><td width="42%">Are Hangers in Good Order</td><td width="8%" align="center">{!jobsheet.Are_Hangers_in_Good_Order__c}</td></tr>
+<tr><td width="42%">Any Sprinkler Guards Required</td><td width="8%" align="center">{!jobsheet.Any_Sprinkler_Guards_Required__c}</td><td width="42%">Are All Sprinklers in Rule</td><td width="8%" align="center">{!jobsheet.Are_All_Sprinklers_in_Rule__c}</td></tr>
+<tr><th colspan="4">SPARE PARTS</th></tr>
+<tr><td width="42%">Brass LCI Padlock</td><td width="8%" align="center">{!jobsheet.Brass_LCI_Padlock__c}</td><td width="42%">Decon Outlet Head</td><td width="8%" align="center">{!jobsheet.Decon_Outlet_Head__c}</td></tr>
+<tr><td width="42%">Drain Valve Sign</td><td width="8%" align="center">{!jobsheet.Drain_Valve_Sign__c}</td><td width="42%">Flow / Pressure Switch</td><td width="8%" align="center">{!jobsheet.Flow_Pressure_Switch__c}</td></tr>
+<tr><td width="42%">Gauge Calibration</td><td width="8%" align="center">{!jobsheet.Gauge_Calibration__c}</td><td width="42%">LCI Leather strap</td><td width="8%" align="center">{!jobsheet.LCI_Leather_strap__c}</td></tr>
+<tr><td width="42%">Lubrication / Grease</td><td width="8%" align="center">{!jobsheet.Lubrication_Grease__c}</td><td width="42%">Pipe Sealant Clamp</td><td width="8%" align="center">{!jobsheet.Pipe_Sealant_Clamp__c}</td></tr>
+<tr><td width="42%">Pump Room Signs</td><td width="8%" align="center">{!jobsheet.Pump_Room_Signs__c}</td><td width="42%">Replacement Gasket</td><td width="8%" align="center">{!jobsheet.Replacement_Gasket__c}</td></tr>
+<tr><td width="42%">Replacement Gauge</td><td width="8%" align="center">{!jobsheet.Replacement_Gauge__c}</td><td width="42%">Suppression/Sprinkler Outlet Head</td><td width="8%" align="center">{!jobsheet.Suppression_Sprinkler_Outlet_Head__c}</td></tr>
+<tr><td width="42%">Valve Sealing Units</td><td width="8%" align="center">{!jobsheet.Valve_Sealing_Units__c}</td><td width="42%">Other -</td><td width="8%" align="center">{!jobsheet.Other__c}</td></tr>
+<tr><th colspan="4">Sprinkler Rules Applicable as Noted on the System Block Plan</th></tr>
+<tr><td colspan="4" style="padding-top:1.5cm"></td></tr>
+<tr><td width="42%">Std A</td><td width="8%" align="center">{!jobsheet.Std_A__c}</td><td width="42%">OH 3</td><td width="8%" align="center">{!jobsheet.OH_3__c}</td></tr>
+<tr><td width="42%">Std B</td><td width="8%" align="center">{!jobsheet.Std_B__c}</td><td width="42%">OH3 Special</td><td width="8%" align="center">{!jobsheet.OH3_Special__c}</td></tr>
+<tr><td width="42%">Ord</td><td width="8%" align="center">{!jobsheet.Ord__c}</td><td width="42%">Hyd. Calc.</td><td width="8%" align="center">{!jobsheet.Hyd_Calc__c}</td></tr>
+<tr><td width="42%">EL H</td><td width="8%" align="center">{!jobsheet.EL_H__c}</td><td width="42%">EHH Cat 1</td><td width="8%" align="center">{!jobsheet.EHH_Cat_1__c}</td></tr>
+<tr><td width="42%">OH 1</td><td width="8%" align="center">{!jobsheet.OH_1__c}</td><td width="42%">EHH Cat 2</td><td width="8%" align="center">{!jobsheet.EHH_Cat_2__c}</td></tr>
+<tr><td width="42%">OH 2</td><td width="8%" align="center">{!jobsheet.OH_2__c}</td><td width="42%">EHH Cat 3</td><td width="8%" align="center">{!jobsheet.EHH_Cat_3__c}</td></tr>
+<tr><td width="42%">Other (Specify)</td><td width="8%" align="center">{!jobsheet.Other_Specify__c}</td><td width="42%">EHH Cat 4</td><td width="8%" align="center">{!jobsheet.EHH_Cat_4__c}</td></tr>
+<tr><th colspan="4">Water Supply</th></tr>
+<tr><td width="42%">Town Main – Single</td><td width="8%" align="center">{!jobsheet.Town_Main_Single__c}</td><td width="42%">Town Main – Dual</td><td width="8%" align="center">{!jobsheet.Town_Main_Dual__c}</td></tr>
+<tr><td width="42%">Boosted Town Main</td><td width="8%" align="center">{!jobsheet.Boosted_Town_Main__c}</td><td width="42%">Pressurised Ring Main</td><td width="8%" align="center">{!jobsheet.Pressurised_Ring_Main__c}</td></tr>
+<tr><td width="42%">Suction Tank</td><td width="8%" align="center">{!jobsheet.Suction_Tank__c}</td><td width="42%">Gravity Tank</td><td width="8%" align="center">{!jobsheet.Gravity_Tank__c}</td></tr>
+ <tr><td width="42%">Pressure Tank</td><td width="8%" align="center">{!jobsheet.Pressure_Tank__c}</td><td width="42%">Reservoir</td><td width="8%" align="center">{!jobsheet.Reservoir__c}</td></tr>
+ <tr><td width="42%">River</td><td width="8%" align="center">{!jobsheet.River__c}</td><td width="42%">Canal</td><td width="8%" align="center">{!jobsheet.Canal__c}</td></tr>
+ <tr><td width="42%">Single Pump</td><td width="8%" align="center">{!jobsheet.Single_Pump__c}</td><td width="42%">Multiple Tank</td><td width="8%" align="center">{!jobsheet.Multiple_Tank__c}</td></tr>
+ <tr><th colspan="4">Manually Operated/cut off section</th></tr>
+ <tr><td width="42%">Isolating/Cut Off Valve</td><td width="8%" align="center">{!jobsheet.Isolating_Cut_Off_Valve__c}</td><td width="42%">Water Running Test Carried Out?</td><td width="8%" align="center">{!jobsheet.Water_Running_Test_Carried_Out__c}</td></tr>
+ <tr><td width="42%">Sprinkler Heads/Nozzles Obstructed?</td><td width="8%" align="center">{!jobsheet.Sprinkler_Heads_Nozzles_Obstructed__c}</td><td width="42%"></td><td width="8%" align="center"></td></tr>
+ <tr><th colspan="4">Remote Fire Alarm Indication</th></tr>
+ <tr><td width="42%">Pressure Switches Work?</td><td width="8%" align="center">{!jobsheet.Pressure_Switches_Work__c}</td><td width="42%">Remote Signal Received Other</td><td width="8%" align="center">{!jobsheet.Remote_Signal_Received_Other__c}</td></tr>
+<tr><td width="42%">Remote Signal Received Fire Brigade</td><td width="8%" align="center">{!jobsheet.Remote_Signal_Received_Fire_Brigade__c}</td><td width="42%"></td><td width="8%" align="center"></td></tr>
+<tr><th colspan="4">False Alarm Booster pump</th></tr>
+<tr><td width="42%">Motor Operation OK?</td><td width="8%" align="center">{!jobsheet.Motor_Operation_OK_Flase_Alarm__c}</td><td width="42%">Automatic Operation Cut out Pressure(bar)</td><td width="8%" align="center">{!jobsheet.AutomaticOperationCutoutPressurebarFalse__c}</td></tr>
+<tr><td width="42%">Automatic Operation Cut in Pressure(bar)</td><td width="8%" align="center">{!jobsheet.Automatic_OperationCutinPressurebarFalse__c}</td><td width="42%"></td><td width="8%" align="center"></td></tr>
+<tr><th colspan="4">Frost Precautions / Alternate System Air Compressor</th></tr>
+<tr><td width="42%">Trace Heating Int/Ext</td><td width="8%" align="center">{!jobsheet.Trace_Heating_Int_Ext__c}</td><td width="42%">Motor Operation OK?</td><td width="8%" align="center">{!jobsheet.Motor_Operation_OK__c}</td></tr>
+<tr><td width="42%">Insulation Int/Ext</td><td width="8%" align="center">{!jobsheet.Insulation_Int_Ext__c}</td><td width="42%">Automatic Operation Cut in Pressure(bar)</td><td width="8%" align="center">{!jobsheet.Automatic_Operation_Cut_in_Pressure_bar__c}</td></tr>
+ <tr><td width="42%">Heating Insulation</td><td width="8%" align="center">{!jobsheet.Heating_Insulation__c}</td><td width="42%">Automatic Operation Cut Out Pressure(bar)</td><td width="8%" align="center">{!jobsheet.Automatic_Operation_Cut_Out_Pressure_bar__c}</td></tr>
+<tr><td width="42%">Suction Tank Immersion Heater</td><td width="8%" align="center">{!jobsheet.Suction_Tank_Immersion_Heater__c}</td><td width="42%">Thermostat Controls</td><td width="8%" align="center">{!jobsheet.Thermostat_Controls__c}</td></tr>
+<tr><td width="42%">Oil Level OK?</td><td width="8%" align="center">{!jobsheet.Oil_Level_OK__c}</td><td width="42%"></td><td width="8%" align="center"></td></tr>
+<tr><th colspan="4">General Inspection of Installation</th></tr>
+ <tr><td width="42%">Block plan available and current?</td><td width="8%" align="center">{!jobsheet.Block_plan_available_and_current__c}</td><td width="42%">Any Sprinkler heads obstructed?</td><td width="8%" align="center">{!jobsheet.Any_Sprinkler_heads_obstructed__c}</td></tr>
+<tr><td width="42%">Weekly bell test card up to date?</td><td width="8%" align="center">{!jobsheet.Weekly_bell_test_card_up_to_date__c}</td><td width="42%">Any Structural alteration requiring?</td><td width="8%" align="center">{!jobsheet.Any_Structural_alteration_requiring__c}</td></tr>
+<tr><td width="42%">Correct No of Spare Heads Available?</td><td width="8%" align="center">{!jobsheet.Correct_No_of_Spare_Heads_Available__c}</td><td width="42%">Any alterations to Sprinkler System?</td><td width="8%" align="center">{!jobsheet.Any_alterations_to_Sprinkler_System__c}</td></tr>
+<tr><td width="42%">Sprinkler free corrosion paint/deposit?</td><td width="8%" align="center">{!jobsheet.Sprinkler_free_corrosion_paint_deposit__c}</td><td width="42%">Any Goods stored within 1m of heads?</td><td width="8%" align="center">{!jobsheet.Any_Goods_stored_within_1m_of_heads__c}</td></tr>
+<tr><td width="42%">Are pipework, hangers and fittings okay?</td><td width="8%" align="center">{!jobsheet.Are_pipework_hangers_and_fittings_okay__c}</td><td width="42%">Has a hazard review been carried out?</td><td width="8%" align="center">{!jobsheet.Has_a_hazard_review_been_carried_out__c}</td></tr>
+<tr><th colspan="4">The System has been left fully operational?</th></tr>
+<tr><td width="42%">10 Yearly Routine</td><td width="8%" align="center">{!jobsheet.X10_Yearly_Routine__c}</td><td width="42%"></td><td width="8%" align="center"></td></tr>
+<tr><td width="42%">3 Yearly Routine</td><td width="8%" align="center">{!jobsheet.X3_Yearly_Routine__c}</td><td width="42%"></td><td width="8%" align="center"></td></tr>
+<tr><td width="42%">Yearly Routine</td><td width="8%" align="center">{!jobsheet.Yearly_Routine__c}</td><td width="42%"></td><td width="8%" align="center"></td></tr>
+<tr><td width="42%">Half-Yearly Routine</td><td width="8%" align="center">{!jobsheet.Half_Yearly_Routine__c}</td><td width="42%"></td><td width="8%" align="center"></td></tr>
+<tr><td width="42%">Quarterly Routine</td><td width="8%" align="center">{!jobsheet.Quarterly_Routine__c}</td><td width="42%"></td><td width="8%" align="center"></td></tr>
+<tr><th colspan="4">Fire Pump Flow and Pressure Test Results</th></tr>
+<tr><td width="42%">Electric pump Design Duty l/min</td><td width="8%" align="center">{!jobsheet.Electric_pump_Design_Duty_l_min__c}</td><td width="42%">Diesel Pump Design Duty l/min</td><td width="8%" align="center">{!jobsheet.Diesel_Pump_Design_Duty_l_min__c}</td></tr>
+<tr><td width="42%">Electric pump Design Duty bar</td><td width="8%" align="center">{!jobsheet.Electric_pump_Design_Duty_bar__c}</td><td width="42%">Diesel Pump Design Duty bar</td><td width="8%" align="center">{!jobsheet.Diesel_Pump_Design_Duty_bar__c}</td></tr>
+<tr><td width="42%">Electric pump Design Duty rpms/amps</td><td width="8%" align="center">{!jobsheet.Electric_pump_Design_Duty_rpms_amps__c}</td><td width="42%">Diesel Pump Design Duty rpms/amps</td><td width="8%" align="center">{!jobsheet.Diesel_Pump_Design_Duty_rpms_amps__c}</td></tr>
+<tr><td width="42%">Electric Test pipe Dia</td><td width="8%" align="center">{!jobsheet.Electric_Test_pipe_Dia__c}</td><td width="42%">Diesel Test Pipe Dia</td><td width="8%" align="center">{!jobsheet.Diesel_Test_Pipe_Dia__c}</td></tr>
+<tr><td width="42%">Electric Pressure (bar)</td><td width="8%" align="center">{!jobsheet.Electric_Pressure_bar__c}</td><td width="42%">Diesel Flow l/min</td><td width="8%" align="center">{!jobsheet.Diesel_Flow_l_min__c}</td></tr>
+<tr><td width="42%">Electric Flow l/min</td><td width="8%" align="center">{!jobsheet.Electric_Flow_l_min__c}</td><td width="42%">Diesel Pressure (bar)</td><td width="8%" align="center">{!jobsheet.Diesel_Pressure_bar__c}</td></tr>
+<tr><td width="42%">Electric Engine Speed (rpm)</td><td width="8%" align="center">{!jobsheet.Electric_Engine_Speed_rpm__c}</td><td width="42%">Diesel Engine Speed (rpm)</td><td width="8%" align="center">{!jobsheet.Diesel_Engine_Speed_rpm__c}</td></tr>
+<tr><td width="42%">Electric Closed valve pressure (bar)</td><td width="8%" align="center">{!jobsheet.Electric_Closed_valve_pressure_bar__c}</td><td width="42%">Diesel Closed valve pressure (bar)</td><td width="8%" align="center">{!jobsheet.Diesel_Closed_valve_pressure_bar__c}</td></tr>
+<tr><td width="42%">Electric Test Results OK?</td><td width="8%" align="center">{!jobsheet.Electric_Test_Results_OK__c}</td><td width="42%">Diesel Test Result OK?</td><td width="8%" align="center">{!jobsheet.Diesel_Test_Result_OK__c}</td></tr>
+<tr><td width="42%">Electric Test pipe SV closed?</td><td width="8%" align="center">{!jobsheet.Electric_Test_pipe_SV_closed__c}</td><td width="42%">Diesel Test pipe SV closed?</td><td width="8%" align="center">{!jobsheet.Diesel_Test_pipe_SV_closed__c}</td></tr>
+<tr><td width="42%">Electric Test pipe Drained?</td><td width="8%" align="center">{!jobsheet.Electric_Test_pipe_Drained__c}</td><td width="42%">Diesel Test pipe Drained?</td><td width="8%" align="center">{!jobsheet.Diesel_Test_pipe_Drained__c}</td></tr>
+<tr><th colspan="4">Pump / Air Compressor Start Test Results</th></tr>
+<tr><td width="42%">Electric Motors Starts OK?</td><td width="8%" align="center">{!jobsheet.Electric_Motors_Starts_OK__c}</td><td width="42%">Diesel Delivery NRV OK?</td><td width="8%" align="center">{!jobsheet.Diesel_Delivery_NRV_OK__c}</td></tr>
+<tr><td width="42%">Electric cut in pressure (bar)</td><td width="8%" align="center">{!jobsheet.Electric_cut_in_pressure_bar__c}</td><td width="42%">Diesel Delivery SV locked open?</td><td width="8%" align="center">{!jobsheet.Diesel_Delivery_SV_locked_open__c}</td></tr>
+<tr><td width="42%">Electric Full load running current</td><td width="8%" align="center">{!jobsheet.Electric_Full_load_running_current__c}</td><td width="42%">Diesel Suction SV locked open?</td><td width="8%" align="center">{!jobsheet.Diesel_Suction_SV_locked_open__c}</td></tr>
+<tr><td width="42%">Electric Test OK?</td><td width="8%" align="center">{!jobsheet.Electric_Test_OK__c}</td><td width="42%">Trunk main jockey pump Motor Starts OK?</td><td width="8%" align="center">{!jobsheet.Trunk_main_jockey_pump_Motor_Starts_OK__c}</td></tr>
+<tr><td width="42%">Electric Pressure relief valve OK?</td><td width="8%" align="center">{!jobsheet.Electric_Pressure_relief_valve_OK__c}</td><td width="42%">Trunk main jockey pump Cut in pressure</td><td width="8%" align="center">{!jobsheet.Trunk_main_jockey_pump_Cut_in_pressure__c}</td></tr>
+<tr><td width="42%">Electric Delivery NRV OK?</td><td width="8%" align="center">{!jobsheet.Electric_Delivery_NRV_OK__c}</td><td width="42%">Trunk main Full load running current</td><td width="8%" align="center">{!jobsheet.Trunk_main_Full_load_running_current__c}</td></tr>
+<tr><td width="42%">Electric Delivery SV locked open?</td><td width="8%" align="center">{!jobsheet.Electric_Delivery_SV_locked_open__c}</td><td width="42%">Trunk main jockey pump Test OK?</td><td width="8%" align="center">{!jobsheet.Trunk_main_jockey_pump_Test_OK__c}</td></tr>
+<tr><td width="42%">Electric Suction SV locked open?</td><td width="8%" align="center">{!jobsheet.Electric_Suction_SV_locked_open__c}</td><td width="42%">Trunk main pressure relief valve OK?</td><td width="8%" align="center">{!jobsheet.Trunk_main_pressure_relief_valve_OK__c}</td></tr>
+<tr><td width="42%">Diesel Motor start OK?</td><td width="8%" align="center">{!jobsheet.Diesel_Motor_start_OK__c}</td><td width="42%">Trunk main Delivery NRV OK?</td><td width="8%" align="center">{!jobsheet.Trunk_main_Delivery_NRV_OK__c}</td></tr>
+<tr><td width="42%">Diesel cut in pressure (bar)</td><td width="8%" align="center">{!jobsheet.Diesel_cut_in_pressure_bar__c}</td><td width="42%">Trunk main Delivery SV locked open?</td><td width="8%" align="center">{!jobsheet.Trunk_main_Delivery_SV_locked_open__c}</td></tr>
+<tr><td width="42%">Diesel Test OK?</td><td width="8%" align="center">{!jobsheet.Diesel_Test_OK__c}</td><td width="42%">Trunk main Suction SV locked open?</td><td width="8%" align="center">{!jobsheet.Trunk_main_Suction_SV_locked_open__c}</td></tr>
+<tr><td width="42%">Diesel Pressure relief valve OK?</td><td width="8%" align="center">{!jobsheet.Diesel_Pressure_relief_valve_OK__c}</td><td width="42%">Diesel Cut out pressure (bar)</td><td width="8%" align="center">{!jobsheet.Diesel_Cut_out_pressure_bar__c}</td></tr>
+<tr><th colspan="4">Diesel Pump Starting and Running Condition</th></tr>
+<tr><td width="42%">AC Supply battery charger switched on?</td><td width="8%" align="center">{!jobsheet.AC_Supply_battery_charger_switched_on__c}</td><td width="42%">Fuel oil level OK?</td><td width="8%" align="center">{!jobsheet.Fuel_oil_level_OK__c}</td></tr>
+<tr><td width="42%">DC Supply to starter switched on?</td><td width="8%" align="center">{!jobsheet.DC_Supply_to_starter_switched_on__c}</td><td width="42%">Cooling water Circulation OK?</td><td width="8%" align="center">{!jobsheet.Cooling_water_Circulation_OK__c}</td></tr>
+<tr><td width="42%">Engine Oil level OK?</td><td width="8%" align="center">{!jobsheet.Engine_Oil_level_OK__c}</td><td width="42%">Manual Start OK?</td><td width="8%" align="center">{!jobsheet.Manual_Start_OK__c}</td></tr>
+<tr><td width="42%">Engine Oil pressure OK?</td><td width="8%" align="center">{!jobsheet.Engine_Oil_pressure_OK__c}</td><td width="42%">Total Running Hours</td><td width="8%" align="center">{!jobsheet.Total_Running_Hours__c}</td></tr>
+<tr><td width="42%">Engine Water temp. OK?</td><td width="8%" align="center">{!jobsheet.Engine_Water_temp_OK__c}</td><td width="42%"></td><td width="8%" align="center"></td></tr>
+<tr><th colspan="4">Suction and priming Tanks</th></tr>
+<tr><td width="42%">Suction Water supply SV open?</td><td width="8%" align="center">{!jobsheet.Suction_Water_supply_SV_open__c}</td><td width="42%">Priming Water supply SV open</td><td width="8%" align="center">{!jobsheet.Priming_Water_supply_SV_open__c}</td></tr>
+<tr><td width="42%">Suction Ball valve OK?</td><td width="8%" align="center">{!jobsheet.Suction_Ball_valve_OK__c}</td><td width="42%">Priming Ball valve OK?</td><td width="8%" align="center">{!jobsheet.Priming_Ball_valve_OK__c}</td></tr>
+<tr><td width="42%">Suction Water level OK?</td><td width="8%" align="center">{!jobsheet.Suction_Water_level_OK__c}</td><td width="42%">Priming Water level OK?</td><td width="8%" align="center">{!jobsheet.Priming_Water_level_OK__c}</td></tr>
+<tr><td width="42%">Suction Tank Condition OK?</td><td width="8%" align="center">{!jobsheet.Suction_Tank_Condition_OK__c}</td><td width="42%">Priming Tank Condition OK?</td><td width="8%" align="center">{!jobsheet.Priming_Tank_Condition_OK__c}</td></tr>
+<tr><td width="42%">Water level indicator/Contents Gauge OK?</td><td width="8%" align="center">{!jobsheet.Water_level_indicator_Contents_Gauge_OK__c}</td><td width="42%">Priming water to pump SC locked open?</td><td width="8%" align="center">{!jobsheet.Priming_water_to_pump_SC_locked_open__c}</td></tr>
+<tr><td width="42%">Pump Suction Supply SV locked open?</td><td width="8%" align="center">{!jobsheet.Pump_Suction_Supply_SV_locked_open__c}</td><td width="42%">Low level float switch pump starts OK?</td><td width="8%" align="center">{!jobsheet.Low_level_float_switch_pump_starts_OK__c}</td></tr>
+<tr><th colspan="4">Pump Section Condition</th></tr>
+<tr><td width="42%">Positive Head</td><td width="8%" align="center">{!jobsheet.Positive_Head__c}</td><td width="42%">Foot Valve OK?</td><td width="8%" align="center">{!jobsheet.Foot_Valve_OK__c}</td></tr>
+<tr><td width="42%">Suction Lift</td><td width="8%" align="center">{!jobsheet.Suction_Lift__c}</td><td width="42%"></td><td width="8%" align="center"></td></tr>
+<tr><th colspan="4">Jackwell</th></tr>
+<tr><td width="42%">Water level in jackwell OK?</td><td width="8%" align="center">{!jobsheet.Water_level_in_jackwell_OK__c}</td><td width="42%">Jackwell free from debris?</td><td width="8%" align="center">{!jobsheet.Jackwell_free_from_debris__c}</td></tr>
+<tr><td width="42%">Penstock secure in open position?</td><td width="8%" align="center">{!jobsheet.Penstock_secure_in_open_position__c}</td><td width="42%"></td><td width="8%" align="center"></td></tr>
+<tr><th colspan="4">Remote Fire Pump Alarm Equipment</th></tr>
+<tr><td width="42%">Electric Pump on Demand</td><td width="8%" align="center">{!jobsheet.Electric_Pump_on_Demand__c}</td><td width="42%">Diesel Controller</td><td width="8%" align="center">{!jobsheet.Diesel_Controller__c}</td></tr>
+<tr><td width="42%">Electric Pump Running</td><td width="8%" align="center">{!jobsheet.Electric_Pump_Running__c}</td><td width="42%">Fire in pumphouse Isolater open?</td><td width="8%" align="center">{!jobsheet.Fire_in_pumphouse_Isolater_open__c}</td></tr>
+<tr><td width="42%">Electric Controller</td><td width="8%" align="center">{!jobsheet.Electric_Controller__c}</td><td width="42%">Fire in pumphouse Flow switch OK?</td><td width="8%" align="center">{!jobsheet.Fire_in_pumphouse_Flow_switch_OK__c}</td></tr>
+<tr><td width="42%">Diesel pump on Demand</td><td width="8%" align="center">{!jobsheet.Diesel_pump_on_Demand__c}</td><td width="42%">Fire pumphouse Test valve locked closed?</td><td width="8%" align="center">{!jobsheet.Fire_pumphouse_Test_valve_locked_closed__c}</td></tr>
+<tr><td width="42%">Diesel pump Running</td><td width="8%" align="center">{!jobsheet.Diesel_pump_Running__c}</td><td width="42%"></td><td width="8%" align="center"></td></tr>
+<tr><th colspan="4">Pressure Tank</th></tr>
+<tr><td width="42%">External Condition OK?</td><td width="8%" align="center">{!jobsheet.External_Condition_OK__c}</td><td width="42%">Pressure in tank (bar)</td><td width="8%" align="center">{!jobsheet.Pressure_in_tank_bar__c}</td></tr>
+<tr><td width="42%">Back Pressure Valve OK?</td><td width="8%" align="center">{!jobsheet.Back_Pressure_Valve_OK__c}</td><td width="42%">Air Compressor Cut In Pressure (bar)</td><td width="8%" align="center">{!jobsheet.Air_Compressor_Cut_In_Pressure_bar__c}</td></tr>
+<tr><td width="42%">Isolating Valve Locked Open?</td><td width="8%" align="center">{!jobsheet.Isolating_Valve_Locked_Open__c}</td><td width="42%">Air Compressor Cut Out Pressure (bar)</td><td width="8%" align="center">{!jobsheet.Air_Compressor_Cut_Out_Pressure_bar__c}</td></tr>
+<tr><td width="42%">Charging Pump Starts?</td><td width="8%" align="center">{!jobsheet.Charging_Pump_Starts__c}</td><td width="42%">Air Water Ratio</td><td width="8%" align="center">{!jobsheet.Air_Water_Ratio__c}</td></tr>
+<tr><th colspan="4">Reduced Capacity Suction Tank</th></tr>
+<tr><td width="42%">Town Main Flow</td><td width="8%" align="center">{!jobsheet.Town_Main_Flow__c}</td><td width="42%">Float Switch Operates OK?</td><td width="8%" align="center">{!jobsheet.Float_Switch_Operates_OK__c}</td></tr>
+<tr><td width="42%">Flow OK?</td><td width="8%" align="center">{!jobsheet.Flow_OK__c}</td><td width="42%">Pressure Relief Valve OK?</td><td width="8%" align="center">{!jobsheet.Pressure_Relief_Valve_OK__c}</td></tr>
+
+</table>   
+
+<table width="100%">
+<!--<tr><th colspan="4">COMMENTS TO COMPLIANCE TEAM</th></tr>
+    <tr><td colspan="4" style="{!if(jobsheet.fax__Engineer_Completion_Notes__c=='','padding-top:1cm','')}">{!jobsheet.Comments_To_Compliance_Team__c}</td></tr>-->
+
+<tr><th colspan="4">COMMENTS TO CUSTOMER</th></tr>
+    <tr><td colspan="4" style="">{!jobsheet.Comments_To_Customer__c}</td></tr>
+    
+<tr><th colspan="4">COMMENTS TO COMPLIANCE</th></tr>
+    <tr><td colspan="4" style="">{!jobsheet.fax__Engineer_Completion_Notes__c}</td></tr>
+
+<tr style="page-break-inside:avoid;"><td  width="25%" style="padding-top:.5cm;padding-bottom:.5cm;">TECHNICIAN SIGNATURE</td>
+    <td  width="25%" ><apex:outputtext value="{!substitute(jobsheet.fax__Engineer_Signature__c,"alt=","width=\"100px\" Alt=")}" escape="false"/><!--<apex:outputField value="{!jobsheet.fax__Engineer_Signature__c}" />--></td>
+<td  width="25%" style="padding-top:.5cm;padding-bottom:.5cm;">CUSTOMER SIGNATURE</td>
+    <td width="25%" > <apex:outputtext value="{!substitute(jobsheet.fax__Customer_Signature__c,"alt=","width=\"100px\" Alt=")}" escape="false"/> <!--<apex:outputField value="{!jobsheet.fax__Customer_Signature__c}" />--></td></tr>
+<tr><td  width="25%" style="padding-top:.35cm;padding-bottom:.35cm;">Print</td>
+    <td  width="25%" style="padding-top:.35cm;padding-bottom:.35cm;"><apex:outputLabel value="{!Jobsheet.fax__Engineer_Name__c}" /></td>
+<td  width="25%" style="padding-top:.35cm;padding-bottom:.35cm;">Print</td>
+    <td width="25%" style="padding-top:.35cm;padding-bottom:.35cm;"><apex:outputText value="{!jobsheet.fax__Customer_Name__c}" /></td></tr>
+
+
+</table>
+
+</div>
+
+
+      </body>   
+         
+</apex:component>
